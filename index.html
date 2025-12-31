@@ -168,19 +168,19 @@
         #vision-board {
             background-color: #ffffff;
             background-image: url(https://www.transparenttextures.com/patterns/paper-fibers.png), url(https://www.transparenttextures.com/patterns/grunge-wall.png);
-            width: 290mm;
-            height: 210mm;
+            width: 420mm;
+            height: 297mm;
             display: flex;
             flex-wrap: wrap;
-            gap: 1%;
             box-sizing: border-box;
             position: relative;
             overflow: hidden;
             box-shadow: 1px 3px 9px rgba(0, 0, 0, 0.5);
-            align-items: center;
             padding: 0;
-            justify-content: space-evenly;
             margin-bottom: 50px;
+            justify-content: space-around;
+            align-content: space-around;
+            align-items: flex-start;
         }
 
         .center-item {
@@ -196,7 +196,7 @@
 
         .center-item .name {
             font-family: 'Reenie Beanie', cursive;
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: #111;
             line-height: 0.8;
             margin-bottom: 10px;
@@ -210,7 +210,7 @@
 
         .center-item .vb-text {
             font-family: 'Special Elite', cursive;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             letter-spacing: 3px;
             text-transform: uppercase;
         }
@@ -230,12 +230,12 @@
             border: 1px solid rgba(0, 0, 0, 0.08);
             position: relative;
             z-index: 0;
+            width: 18%;
         }
 
         .scrap-photo img {
             width: 100%;
             height: auto;
-            max-height: 120px;
             object-fit: cover;
             background: #f0f0f0;
         }
@@ -253,12 +253,13 @@
             font-family: 'Reenie Beanie', cursive;
             box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1), 0px 1px 5px rgba(0, 0, 0, 0.15);
             min-height: 120px;
-            max-height: 120px;
+            max-height: 180px;
             display: flex;
             text-align: center;
             border: 1px solid rgba(0, 0, 0, 0.1);
             flex-direction: column;
             overflow: hidden;
+            width: 13%;
         }
 
         .small-q {
@@ -283,7 +284,7 @@
             position: absolute;
             top: -12px;
             left: 50%;
-            transform: translateX(-50%) rotate(-2deg);
+            transform: translateX(-50%) rotate(-3deg);
             width: 55px;
             height: 20px;
             background-image: url('https://www.transparenttextures.com/patterns/masking-tape.png');
@@ -369,7 +370,7 @@
         }
 
         @page {
-            size: A4 landscape;
+            size: A3 landscape;
             margin: 0;
         }
 
@@ -393,8 +394,8 @@
                 transform: none !important;
                 box-shadow: none !important;
                 margin: 0 !important;
-                width: 297mm !important;
-                height: 210mm !important;
+                width: 420mm !important;
+                height: 297mm !important;
                 -webkit-print-color-adjust: exact;
             }
         }
@@ -488,16 +489,17 @@
             const len = text.length;
             if (len < 15) return '2.2rem';
             if (len < 35) return '2rem';
-            if (len < 65) return '1.5rem';
-            if (len < 100) return '1.1rem';
-            if (len < 250) return '0.8rem';
-            if (len < 400) return '0.6rem';
-            return '0.5rem';
+            if (len < 65) return '1.3rem';
+            if (len < 100) return '1.2rem';
+            if (len < 250) return '1.1rem';
+            if (len < 400) return '1rem';
+            return '0.8rem';
         }
 
         function generateBoard() {
             const board = document.getElementById('vision-board');
             const content = document.getElementById('board-content');
+            const BOARD_COLUMNS = 5;
             content.innerHTML = '';
             document.querySelectorAll('.deco-sticker').forEach(s => s.remove());
 
@@ -513,7 +515,7 @@
             let elements = [];
 
             validImgs.forEach((img, i) => {
-                const rot = (Math.random() * 6 - 3).toFixed(1);
+                const rot = (Math.random() * 8 - 3).toFixed(1);
                 const isPin = Math.random() > 0.5;
                 const fixation = isPin ? `<div class="push-pin"></div>` : `<div class="washi" style="background:${tapeColors[i % 4]}"></div>`;
                 elements.push(`<div class="item scrap-photo" style="transform: rotate(${rot}deg)">${fixation}<img src="${img.url}"><div class="caption">${img.caption}</div></div>`);
@@ -529,7 +531,27 @@
             elements.sort(() => Math.random() - 0.5);
             const name = (data.name || "Seu Nome")
             const centerHtml = `<div class="center-item"><div class="name">${name}</div><div class="year">2026</div><div class="vb-text">Vision Board</div></div>`;
-            elements.splice(Math.floor(elements.length / 2), 0, centerHtml);
+            const columns = BOARD_COLUMNS;
+
+            // posição base (meio geral)
+            let centerIndex = Math.floor(elements.length / 2);
+
+            // calcula a linha onde ele cairia
+            let rowStart = Math.floor(centerIndex / columns) * columns;
+            let rowEnd = rowStart + columns - 1;
+
+            // se cair no começo da linha → empurra pra dentro
+            if (centerIndex === rowStart) {
+                centerIndex += 1;
+            }
+
+            // se cair no fim da linha → puxa pra dentro
+            if (centerIndex === rowEnd) {
+                centerIndex -= 1;
+            }
+
+            elements.splice(centerIndex, 0, centerHtml);
+
             content.innerHTML = elements.join('');
 
             // --- LÓGICA DE STICKERS (PRESERVADA) ---
@@ -566,7 +588,7 @@
                         s.className = 'deco-sticker'; s.innerText = txt;
                         s.style.top = (cell.r * (100 / rows)) + (Math.random() * 4 - 2) + '%';
                         s.style.left = (cell.c * (100 / cols)) + (Math.random() * 4 - 2) + '%';
-                        s.style.transform = `rotate(${Math.random() * 60 - 30}deg)`;
+                        s.style.transform = `rotate(${Math.random() * 90 - 30}deg)`;
                         s.style.fontSize = '2.2rem'; board.appendChild(s);
                     }
                 });
