@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vision Board Gamer 2026</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Reenie+Beanie&family=Special+Elite&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-paper: #efede4;
+            --accent: #b08968;
+            --text: #2b2d42;
+            --gamer-blue: #4e5d94;
+            --gamer-green: #27ae60;
+            --input-bg: #f8f9fa;
+            --item-width: 180px;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #9d9685;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text);
+        }
+
+        /* --- UI DO EDITOR --- */
+        .editor-view {
+            width: 95%;
+            max-width: 900px;
+            background: #ffffff;
+            margin: 40px 20px;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            border-top: 8px solid var(--gamer-blue);
+        }
+
+        .editor-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .editor-header h2 {
+            font-weight: 900;
+            text-transform: uppercase;
+            margin: 0;
+            font-size: 2rem;
+            color: var(--gamer-blue);
+        }
+
+        .section-title {
+            font-size: 0.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin: 30px 0 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        #questionsForm {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .question-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 700;
+            font-size: 0.7rem;
+            color: #555;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        input,
+        textarea {
+            background: var(--input-bg);
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: var(--gamer-blue);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(78, 93, 148, 0.1);
+        }
+
+        .image-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            background: #fcfcfc;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+        }
+
+        .btn-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 16px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 800;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-secondary {
+            background: #eee;
+            color: #555;
+        }
+
+        .btn-primary {
+            background: var(--gamer-blue);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--gamer-green);
+            color: white;
+            grid-column: span 2;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        /* --- MURAL --- */
+        #vision-board {
+            background-color: #ffffff;
+            background-image: url(https://www.transparenttextures.com/patterns/paper-fibers.png), url(https://www.transparenttextures.com/patterns/grunge-wall.png)
+            ;
+            width: 290mm;
+            height: 210mm;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1%;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            align-items: center;
+            padding: 0;
+            justify-content: space-evenly;
+        }
+
+        .center-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 60;
+            position: relative;
+            margin: 1%;
+        }
+
+        .center-item .name {
+            font-family: 'Reenie Beanie', cursive;
+            font-size: 2.5rem;
+            color: #111;
+            line-height: 0.8;
+            margin-bottom: 10px;
+        }
+
+        .center-item .year {
+            font-family: 'Special Elite', cursive;
+            font-size: 4rem;
+            margin: 10px 0;
+        }
+
+        .center-item .vb-text {
+            font-family: 'Special Elite', cursive;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .item {
+            position: relative;
+            flex-shrink: 0;
+            width: var(--item-width);
+            transform-origin: center;
+            margin: 10px;
+        }
+
+        .scrap-photo {
+            background: #fafafa;
+            padding: 10px 10px 24px 10px;
+            box-shadow: 3px 5px 0 rgba(0, 0, 0, 0.08), 8px 10px 18px rgba(0, 0, 0, 0.18);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            position: relative;
+            z-index: 0;
+        }
+
+        .scrap-photo img {
+            width: 100%;
+            height: auto;
+            max-height: 120px;
+            object-fit: cover;
+            background: #f0f0f0;
+        }
+
+        .scrap-photo .caption {
+            font-family: 'Reenie Beanie', cursive;
+            font-size: 1.3rem;
+            margin-top: 5px;
+            text-align: center;
+            line-height: 0.9;
+        }
+
+        .scrap-note {
+            padding: 12px;
+            font-family: 'Reenie Beanie', cursive;
+            box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1), 0px 1px 5px rgba(0, 0, 0, 0.15);
+            min-height: 120px;
+            max-height: 120px;
+            /* Trava de tamanho */
+            display: flex;
+            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .small-q {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.45rem;
+            text-transform: uppercase;
+            opacity: 0.5;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .ans-text {
+            line-height: 1.1;
+            color: #1c1c1c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+        }
+
+        .washi {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 55px;
+            height: 20px;
+            background-image: url('https://www.transparenttextures.com/patterns/masking-tape.png');
+            opacity: 0.75;
+            z-index: 10;
+        }
+
+        .push-pin {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ff5e5e, #8b0000);
+            box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.4);
+            z-index: 20;
+        }
+
+        .deco-sticker {
+            position: absolute;
+            font-family: 'Reenie Beanie', cursive;
+            font-size: 3rem;
+            color: var(--accent);
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @page {
+            size: A4 landscape;
+            margin: 0;
+        }
+
+        @media print {
+
+            .editor-view,
+            .btn {
+                display: none !important;
+            }
+
+            #vision-board {
+                margin: 0 !important;
+                width: 297mm !important;
+                height: 210mm !important;
+                -webkit-print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="editor-view">
+        <div class="editor-header">
+            <h2>Nosso Vision Board Gamer</h2>
+        </div>
+
+        <div class="section-title">Formulário Gamer</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="question-group">
+                <label>Nome Gamer</label>
+                <input type="text" id="userName" class="name-input" oninput="autoSave()">
+            </div>
+            <div class="question-group">
+                <label>Stickers Gamers</label>
+                <input type="text" id="userStickers" class="name-input" oninput="autoSave()">
+            </div>
+        </div>
+
+        <div class="section-title">📜 Perguntas Raras</div>
+        <div id="questionsForm"></div>
+
+        <div class="section-title">Vision Board ULTRA RARO 2026</div>
+        <p>
+            Olhe para suas respostas e tente identificar seus desejos/sonhos.<br><br>
+
+            Imagine cada um deles com calma e perceba o que você sente:<br>
+            isso te dá um <strong>frio na barriga</strong> ou <strong>vontade de ir pra frente</strong>?<br>
+            te <strong>trava</strong> ou te <strong>anima</strong>?<br><br>
+
+            O que te <strong>faz bem</strong> e te <strong>puxa pra cima</strong> merece espaço aqui.<br>
+            Coloque imagens que representem seus sonhos para <strong>2026</strong> para montar seu
+            <strong>Vision Board</strong>.
+        </p>
+
+        <div id="imageInputs"></div>
+
+        <div class="btn-container">
+            <button class="btn btn-secondary" onclick="addImageField()">+ Add Imagem</button>
+            <button class="btn btn-primary" onclick="generateBoard()">🎨 Gerar Board</button>
+            <button class="btn btn-success" onclick="window.print()">📄 Exportar PDF</button>
+        </div>
+    </div>
+
+    <div id="vision-board">
+        <div id="board-content" style="display:contents;"></div>
+    </div>
+
+    <script>
+        const questions = ["O que realmente te faz feliz?", "O que é inegociável para você?", "Como seria sua rotina ideal?", "Quem são as pessoas mais importante da sua vida?", "Como você gostaria de se sentir no seu corpo?", "Como seria sua rotina de auto-cuidado?", "Qual cenario ideal, porém realista sobre suas finanças?", "O que você quer viver que te torne a pessoa que você descreveu nas respostas anteriores?", "Qual Impacto você gostaria de deixar no mundo em 2026?"];
+        const tapeColors = ['#b8c1ec', '#ffb7b2', '#e2f0cb', '#fdfa66'];
+
+        function init() {
+            const form = document.getElementById('questionsForm');
+            questions.forEach((q, i) => {
+                form.innerHTML += `<div class="question-group"><label>${q}</label><textarea rows='10' id="q-${i}" oninput="autoSave()"></textarea></div>`;
+            });
+            const saved = JSON.parse(localStorage.getItem('vb_landscape_v_final_custom') || '{}');
+            if (saved.name) document.getElementById('userName').value = saved.name;
+            if (saved.stickers) document.getElementById('userStickers').value = saved.stickers;
+            if (saved.answers) saved.answers.forEach((ans, i) => { if (document.getElementById(`q-${i}`)) document.getElementById(`q-${i}`).value = ans; });
+            if (saved.items) saved.items.forEach(item => addImageField(item.url, item.caption));
+            else for (let i = 0; i < 3; i++) addImageField();
+            generateBoard();
+        }
+
+        function addImageField(url = '', caption = '') {
+            const div = document.createElement('div');
+            div.className = 'image-row';
+            div.innerHTML = `<div class="question-group"><label>URL da imagem</label><input type="text" class="img-url" value="${url}" oninput="autoSave()"></div><div class="question-group"><label>Legenda</label><input type="text" class="img-caption" value="${caption}" oninput="autoSave()"></div>`;
+            document.getElementById('imageInputs').appendChild(div);
+        }
+
+        function autoSave() {
+            const data = {
+                name: document.getElementById('userName').value,
+                stickers: document.getElementById('userStickers').value,
+                answers: questions.map((_, i) => document.getElementById(`q-${i}`).value),
+                items: Array.from(document.querySelectorAll('.image-row')).map(e => ({ url: e.querySelector('.img-url').value, caption: e.querySelector('.img-caption').value })).filter(i => i.url)
+            };
+            localStorage.setItem('vb_landscape_v_final_custom', JSON.stringify(data));
+        }
+
+        // --- FUNÇÃO MÁGICA DE TAMANHO DE FONTE ---
+        function getDynamicFontSize(text) {
+            const len = text.length;
+            if (len < 15) return '2.2rem';
+            if (len < 35) return '2rem';
+            if (len < 65) return '1.5rem';
+            if (len < 100) return '1.1rem';
+            if (len < 250) return '0.8rem';
+            if (len < 400) return '0.6rem';
+            return '0.5rem';
+        }
+
+        function generateBoard() {
+            const board = document.getElementById('vision-board');
+            const content = document.getElementById('board-content');
+            content.innerHTML = '';
+            document.querySelectorAll('.deco-sticker').forEach(s => s.remove());
+
+            const data = JSON.parse(localStorage.getItem('vb_landscape_v_final_custom') || '{"answers":[], "items":[], "name":"", "stickers":""}');
+            const validAns = data.answers.filter(a => a.trim());
+            const validImgs = data.items.filter(i => i.url);
+
+            let total = validAns.length + validImgs.length;
+            let itemWidth = 190;
+            if (total > 15) itemWidth = 160;
+            document.documentElement.style.setProperty('--item-width', itemWidth + 'px');
+
+            let elements = [];
+
+            validImgs.forEach((img, i) => {
+                const rot = (Math.random() * 6 - 3).toFixed(1);
+                const isPin = Math.random() > 0.5;
+                const fixation = isPin ? `<div class="push-pin"></div>` : `<div class="washi" style="background:${tapeColors[i % 4]}"></div>`;
+                elements.push(`<div class="item scrap-photo" style="transform: rotate(${rot}deg)">${fixation}<img src="${img.url}"><div class="caption">${img.caption}</div></div>`);
+            });
+
+            validAns.forEach((ans, i) => {
+                const rot = (Math.random() * 8 - 4).toFixed(1);
+                const colors = ['#fff3b0', '#ffcfd2', '#cfefef', '#e2f0cb'];
+                const fSize = getDynamicFontSize(ans);
+                elements.push(`<div class="item scrap-note" style="background:${colors[i % 4]}; transform: rotate(${rot}deg)"><div class="small-q">${questions[data.answers.indexOf(ans)]}</div><div class="ans-text" style="font-size: ${fSize}">${ans}</div></div>`);
+            });
+
+            elements.sort(() => Math.random() - 0.5);
+            const name = (data.name || "Seu Nome")
+            const centerHtml = `<div class="center-item"><div class="name">${name}</div><div class="year">2026</div><div class="vb-text">Vision Board</div></div>`;
+            elements.splice(Math.floor(elements.length / 2), 0, centerHtml);
+            content.innerHTML = elements.join('');
+
+            // --- LÓGICA DE STICKERS (PRESERVADA) ---
+            if (data.stickers) {
+                const baseStickers = data.stickers.split(/\s+/).filter(s => s.trim());
+                const multiplier = 3;
+                const boardRect = board.getBoundingClientRect();
+                const items = Array.from(board.querySelectorAll('.item, .center-item'));
+                const occupiedRects = items.map(item => {
+                    const rect = item.getBoundingClientRect();
+                    return { left: ((rect.left - boardRect.left) / boardRect.width) * 100, top: ((rect.top - boardRect.top) / boardRect.height) * 100, right: ((rect.right - boardRect.left) / boardRect.width) * 100, bottom: ((rect.bottom - boardRect.top) / boardRect.height) * 100 };
+                });
+                const rows = 12, cols = 18;
+                let freeCells = [], busyCells = [], placedStickers = [];
+                for (let r = 0; r < rows; r++) {
+                    for (let c = 0; c < cols; c++) {
+                        const cx = (c * (100 / cols)) + (50 / cols), cy = (r * (100 / rows)) + (50 / rows);
+                        const isOcc = occupiedRects.some(rect => cx > rect.left && cx < rect.right && cy > rect.top && cy < rect.bottom);
+                        if (isOcc) busyCells.push({ r, c }); else freeCells.push({ r, c });
+                    }
+                }
+                freeCells.sort(() => Math.random() - 0.5); busyCells.sort(() => Math.random() - 0.5);
+                const minD = 1.5;
+                function isSafe(cell) { return !placedStickers.some(p => Math.sqrt(Math.pow(p.r - cell.r, 2) + Math.pow(p.c - cell.c, 2)) < minD); }
+                let toPlace = [];
+                for (let i = 0; i < multiplier; i++) baseStickers.forEach(s => toPlace.push(s));
+                toPlace.forEach(txt => {
+                    let cell = freeCells.find((c, idx) => { if (isSafe(c)) return freeCells.splice(idx, 1); });
+                    if (!cell) cell = busyCells.find((c, idx) => { if (isSafe(c)) return busyCells.splice(idx, 1); });
+                    if (!cell) cell = freeCells.shift() || busyCells.shift();
+                    if (cell) {
+                        placedStickers.push(cell);
+                        const s = document.createElement('div');
+                        s.className = 'deco-sticker'; s.innerText = txt;
+                        s.style.top = (cell.r * (100 / rows)) + (Math.random() * 4 - 2) + '%';
+                        s.style.left = (cell.c * (100 / cols)) + (Math.random() * 4 - 2) + '%';
+                        s.style.transform = `rotate(${Math.random() * 60 - 30}deg)`;
+                        s.style.fontSize = '2.2rem'; board.appendChild(s);
+                    }
+                });
+            }
+        }
+        window.onload = init;
+    </script>
+</body>
+
+</html>
