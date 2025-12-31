@@ -41,6 +41,7 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
             z-index: 1000;
             border-top: 8px solid var(--gamer-blue);
+            box-sizing: border-box;
         }
 
         .editor-header {
@@ -98,6 +99,8 @@
             font-size: 0.9rem;
             transition: all 0.2s ease;
             outline: none;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         input:focus,
@@ -161,11 +164,10 @@
             filter: brightness(1.1);
         }
 
-        /* --- MURAL --- */
+        /* --- MURAL (PADRÃO A4) --- */
         #vision-board {
             background-color: #ffffff;
-            background-image: url(https://www.transparenttextures.com/patterns/paper-fibers.png), url(https://www.transparenttextures.com/patterns/grunge-wall.png)
-            ;
+            background-image: url(https://www.transparenttextures.com/patterns/paper-fibers.png), url(https://www.transparenttextures.com/patterns/grunge-wall.png);
             width: 290mm;
             height: 210mm;
             display: flex;
@@ -178,6 +180,7 @@
             align-items: center;
             padding: 0;
             justify-content: space-evenly;
+            margin-bottom: 50px;
         }
 
         .center-item {
@@ -251,7 +254,6 @@
             box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1), 0px 1px 5px rgba(0, 0, 0, 0.15);
             min-height: 120px;
             max-height: 120px;
-            /* Trava de tamanho */
             display: flex;
             text-align: center;
             border: 1px solid rgba(0, 0, 0, 0.1);
@@ -312,6 +314,60 @@
             z-index: 0;
         }
 
+        /* BOTÃO DE PREVIEW MOBILE */
+        #btn-preview-mobile {
+            display: none;
+            background: #34495e;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        /* --- LOGICA DE RESPONSIVIDADE E EXIBIÇÃO --- */
+        @media (max-width: 600px) {
+            .editor-view {
+                padding: 20px;
+                margin: 20px 10px;
+                width: calc(100% - 20px);
+            }
+
+            .editor-header h2 {
+                font-size: 1.4rem;
+            }
+
+            .editor-view>div[style*="grid-template-columns: 1fr 1fr"],
+            .image-row,
+            .btn-container {
+                grid-template-columns: 1fr !important;
+            }
+
+            .btn-success {
+                grid-column: span 1 !important;
+            }
+
+            /* Ocultar board visualmente no mobile por padrão */
+            #vision-board {
+                display: none;
+            }
+
+            /* Estilo quando o Board é ativado para visualização no Mobile */
+            #vision-board.active-preview {
+                display: flex !important;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                z-index: 2000;
+                transform: translate(-50%, -50%) scale(0.3);
+                /* Reduz para caber na tela */
+                box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.8);
+                /* Backdrop */
+                margin: 0;
+            }
+
+            #btn-preview-mobile {
+                display: flex;
+            }
+        }
+
         @page {
             size: A4 landscape;
             margin: 0;
@@ -320,11 +376,22 @@
         @media print {
 
             .editor-view,
-            .btn {
+            .btn,
+            #btn-preview-mobile {
                 display: none !important;
             }
 
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            /* Garantir que o board apareça no PDF mesmo que esteja oculto no mobile */
             #vision-board {
+                display: flex !important;
+                position: relative !important;
+                transform: none !important;
+                box-shadow: none !important;
                 margin: 0 !important;
                 width: 297mm !important;
                 height: 210mm !important;
